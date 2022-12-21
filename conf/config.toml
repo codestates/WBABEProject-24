@@ -1,0 +1,13 @@
+[web]
+mode = "dev"
+port = ":8080"
+
+[db]
+host = "mongodb://localhost:27017"
+
+[log]
+level = "debug"
+fpath = "./logs/go-loger"
+msize = 2000
+mage = 7
+mbackup = 5
