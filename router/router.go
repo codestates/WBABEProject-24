@@ -1,8 +1,8 @@
 package router
 
 import (
-	ctl "wba.backend.oos/controller"
-	"wba.backend.oos/logger"
+	ctl "codestates.wba-01/archoi/backend/oos/controller"
+	"codestates.wba-01/archoi/backend/oos/logger"
 
 	"github.com/gin-gonic/gin"
 )

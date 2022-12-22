@@ -11,8 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"wba.backend.oos/conf"
-
+	"codestates.wba-01/archoi/backend/oos/conf"
 	"github.com/gin-gonic/gin"
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"

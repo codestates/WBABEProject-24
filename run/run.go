@@ -10,12 +10,13 @@ import (
 	"syscall"
 	"time"
 
+	"codestates.wba-01/archoi/backend/oos/conf"
+	"codestates.wba-01/archoi/backend/oos/controller"
+	"codestates.wba-01/archoi/backend/oos/logger"
+	"codestates.wba-01/archoi/backend/oos/model"
+	"codestates.wba-01/archoi/backend/oos/router"
+
 	"golang.org/x/sync/errgroup"
-	"wba.backend.oos/conf"
-	"wba.backend.oos/controller"
-	"wba.backend.oos/logger"
-	"wba.backend.oos/model"
-	"wba.backend.oos/router"
 )
 
 var (

@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"wba.backend.oos/model"
+	"codestates.wba-01/archoi/backend/oos/model"
 )
 
 type Controller struct {

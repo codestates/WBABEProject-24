@@ -1,6 +1,8 @@
 package main
 
-import "wba.backend.oos/run"
+import (
+	"codestates.wba-01/archoi/backend/oos/run"
+)
 
 func main() {
 	run.Run()
