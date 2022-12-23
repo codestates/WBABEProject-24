@@ -24,8 +24,8 @@ const (
 )
 
 type MenuOrderBy struct {
-	target    string // 정렬 기준 필드 이름
-	ascending int    // 1: accending, -1: descending
+	target string // 정렬 기준 필드 이름
+	sort   int    // 1: accending, -1: descending
 }
 
 type Menu struct {
@@ -61,10 +61,10 @@ func NewMenuModel(col *mongo.Collection) *menuModel {
 	m := new(menuModel)
 	m.col = col
 	m.orderByMap = make(map[string]MenuOrderBy)
-	m.orderByMap["recommend"] = MenuOrderBy{target: "isRecommend", ascending: -1}
-	m.orderByMap["score"] = MenuOrderBy{target: "avgScore", ascending: -1}
-	m.orderByMap["mostOrder"] = MenuOrderBy{target: "orderCount", ascending: -1}
-	m.orderByMap["new"] = MenuOrderBy{target: "createDate", ascending: -1}
+	m.orderByMap["recommend"] = MenuOrderBy{target: "isRecommend", sort: -1}
+	m.orderByMap["score"] = MenuOrderBy{target: "avgScore", sort: -1}
+	m.orderByMap["mostOrder"] = MenuOrderBy{target: "orderCount", sort: -1}
+	m.orderByMap["new"] = MenuOrderBy{target: "createDate", sort: -1}
 	return m
 }
 
@@ -104,14 +104,19 @@ func (p *menuModel) FindMenuByName(name string) (Menu, error) {
 	return result, nil
 }
 
-func (p *menuModel) FindMenuList(orderBy string) ([]Menu, error) {
+func (p *menuModel) FindMenuIsDeletedFalseOrderBy(orderBy string, notDeleted bool) ([]Menu, error) {
 	var results []Menu
-	var opts *options.FindOptions
-	// 정렬 옵션 설정
-	if v, ok := p.orderByMap[orderBy]; ok {
-		opts = options.Find().SetSort(bson.D{{v.target, v.ascending}})
+	filter := bson.D{}
+	// 필터 설정 : 삭제되지 않은 메뉴만 필터
+	if notDeleted == true {
+		filter = bson.D{{"isDeleted", false}}
 	}
-	cur, err := p.col.Find(context.TODO(), bson.D{}, opts)
+	// 정렬 옵션 설정
+	var opts *options.FindOptions
+	if v, ok := p.orderByMap[orderBy]; ok {
+		opts = options.Find().SetSort(bson.D{{v.target, v.sort}})
+	}
+	cur, err := p.col.Find(context.TODO(), filter, opts)
 	if err != nil {
 		return results, err
 	}

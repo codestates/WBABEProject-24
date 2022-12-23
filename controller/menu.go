@@ -59,9 +59,9 @@ func (ctl *Controller) DeleteMenuByName(c *gin.Context) {
 	return
 }
 
-func (ctl *Controller) GetMenuList(c *gin.Context) {
+func (ctl *Controller) GetMenuIsDeletedFalseOrderBy(c *gin.Context) {
 	orderBy := c.Query("orderBy")
-	menuList, err := ctl.md.MenuModel.FindMenuList(orderBy)
+	menuList, err := ctl.md.MenuModel.FindMenuIsDeletedFalseOrderBy(orderBy, true)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return

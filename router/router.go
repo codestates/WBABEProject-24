@@ -50,7 +50,7 @@ func (p *Router) Idx() *gin.Engine {
 
 	menuGroup := e.Group("/menu")
 	{
-		menuGroup.GET("/list", p.ct.GetMenuList)
+		menuGroup.GET("/list", p.ct.GetMenuIsDeletedFalseOrderBy)
 		menuGroup.POST("", p.ct.CreateMenu)
 		menuGroup.PUT("/:name", p.ct.UpdateMenuByName)
 		menuGroup.DELETE("/:name", p.ct.DeleteMenuByName)
