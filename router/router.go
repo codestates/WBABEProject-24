@@ -48,12 +48,22 @@ func (p *Router) Idx() *gin.Engine {
 	e.Use(logger.GinRecovery(true))
 	e.Use(CORS())
 
-	menuGroup := e.Group("/menu")
+	recipantGroup := e.Group("/recipant")
 	{
-		menuGroup.GET("/list", p.ct.GetMenuIsDeletedFalseOrderBy)
-		menuGroup.POST("", p.ct.CreateMenu)
-		menuGroup.PUT("/:name", p.ct.UpdateMenuByName)
-		menuGroup.DELETE("/:name", p.ct.DeleteMenuByName)
+		menuGroup := recipantGroup.Group("/menu")
+		{
+			menuGroup.POST("", p.ct.CreateMenu)
+			menuGroup.PUT("/:name", p.ct.UpdateMenuByName)
+			menuGroup.DELETE("/:name", p.ct.DeleteMenuByName)
+		}
+	}
+	ordererGroup := e.Group("/orderer")
+	{
+		menuGroup := ordererGroup.Group("/menu")
+		{
+			menuGroup.GET("/list", p.ct.GetMenuIsDeletedFalseOrderBy)
+
+		}
 	}
 
 	return e
