@@ -93,7 +93,6 @@ func Run() {
 		g.Go(func() error {
 			return mapi.ListenAndServe()
 		})
-		fmt.Println("Server Start...!")
 		logger.Info("Server Start...!")
 
 		// 서버 종료 (우아한 종료: graceful를 true로 설정)
