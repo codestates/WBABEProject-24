@@ -12,9 +12,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// 매움 정도 상수 정의
 type HotGrade int
 
-// 매움 정도 상수 정의
 const (
 	MildHot HotGrade = 1 + iota
 	SlightHot
@@ -104,11 +104,11 @@ func (p *menuModel) FindMenuByName(name string) (Menu, error) {
 	return result, nil
 }
 
-func (p *menuModel) FindMenuIsDeletedOrderBy(isDeleted bool, orderBy string) ([]Menu, error) {
+func (p *menuModel) FindMenuIsDeletedOrderBy(exceptDeleted bool, orderBy string) ([]Menu, error) {
 	var results []Menu
 	filter := bson.D{}
-	// 필터 설정 : 삭제되지 않은 메뉴만 필터
-	if isDeleted == false {
+	// 필터 설정 : 삭제된 메뉴 제외
+	if exceptDeleted == true {
 		filter = bson.D{{"isDeleted", false}}
 	}
 	// 정렬 옵션 설정
