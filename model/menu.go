@@ -40,18 +40,6 @@ type Menu struct {
 	CreateDate  primitive.DateTime `json:"createDate" bson:"createDate"`
 }
 
-type MenuForUpdate struct {
-	Name        string             `json:"name" bson:"name" uri:"name" binding:"omitempty"`
-	Price       int                `json:"price" bson:"price" binding:"omitempty"`
-	HotGrade    int                `json:"hotGrade" bson:"hotGrade" binding:"omitempty"`
-	IsAvailable *bool              `json:"isAvailable" bson:"isAvailable" binding:"omitempty"`
-	IsRecommend *bool              `json:"isRecommend" bson:"isRecommend" binding:"omitempty"`
-	IsDeleted   *bool              `json:"isDeleted" bson:"isDeleted"`
-	AvgScore    int                `json:"avgScore" bson:"avgScore"`
-	OrderCount  int                `json:"orderCount" bson:"orderCount"`
-	CreateDate  primitive.DateTime `json:"createDate" bson:"createDate"`
-}
-
 type menuModel struct {
 	col        *mongo.Collection
 	orderByMap map[string]MenuOrderBy

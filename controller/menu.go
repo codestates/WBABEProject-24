@@ -22,12 +22,8 @@ func (ctl *Controller) CreateMenu(c *gin.Context) {
 }
 
 func (ctl *Controller) UpdateMenuByName(c *gin.Context) {
-	menuName := model.MenuForUpdate{}
-	if err := c.ShouldBindUri(&menuName); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-		return
-	}
-	menu, err := ctl.md.MenuModel.FindMenuByName(menuName.Name)
+	menuName := c.Param("name")
+	menu, err := ctl.md.MenuModel.FindMenuByName(menuName)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
@@ -37,7 +33,7 @@ func (ctl *Controller) UpdateMenuByName(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
-	if err := ctl.md.MenuModel.UpdateMenuByName(menuName.Name, model.Menu(updateForMenu)); err != nil {
+	if err := ctl.md.MenuModel.UpdateMenuByName(menuName, updateForMenu); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
@@ -46,12 +42,8 @@ func (ctl *Controller) UpdateMenuByName(c *gin.Context) {
 }
 
 func (ctl *Controller) DeleteMenuByName(c *gin.Context) {
-	menuName := model.MenuForUpdate{}
-	if err := c.ShouldBindUri(&menuName); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-		return
-	}
-	if err := ctl.md.MenuModel.DeleteMenuByName(menuName.Name); err != nil {
+	menuName := c.Param("name")
+	if err := ctl.md.MenuModel.DeleteMenuByName(menuName); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
