@@ -56,6 +56,21 @@ func NewMenuModel(col *mongo.Collection) *menuModel {
 	return m
 }
 
+func (p *menuModel) IsOrderable(menuameList []string) error {
+	for _, name := range menuameList {
+		menu, err := p.FindMenuByName(name)
+		// 존재하는 메뉴인지 체크
+		if err != nil {
+			return err
+		}
+		// 주문 가능한 메뉴인지 체크
+		if *menu.IsAvailable == false || *menu.IsDeleted == true {
+			return fmt.Errorf("Menu %s Not Available", menu.Name)
+		}
+	}
+	return nil
+}
+
 func (p *menuModel) CreateMenu(menu Menu) error {
 	if menu.Name == "" {
 		return fmt.Errorf("Require Menu name")
