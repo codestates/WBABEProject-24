@@ -1,14 +1,14 @@
 package controller
 
 import (
-	"codestates.wba-01/archoi/backend/oos/model"
+	"codestates.wba-01/archoi/backend/oos/service"
 )
 
 type Controller struct {
-	md *model.Model
+	srv *service.Service
 }
 
-func NewCTL(rep *model.Model) (*Controller, error) {
-	r := &Controller{md: rep}
+func NewCTL(rep *service.Service) (*Controller, error) {
+	r := &Controller{srv: rep}
 	return r, nil
 }

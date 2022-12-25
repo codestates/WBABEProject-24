@@ -15,6 +15,7 @@ import (
 	"codestates.wba-01/archoi/backend/oos/logger"
 	"codestates.wba-01/archoi/backend/oos/model"
 	"codestates.wba-01/archoi/backend/oos/router"
+	"codestates.wba-01/archoi/backend/oos/service"
 
 	"golang.org/x/sync/errgroup"
 )
@@ -72,7 +73,10 @@ func Run() {
 		// 모델 초기화
 		logger.Error("model.NewModel", err)
 		panic(fmt.Errorf("model.NewModel error: %v", err))
-	} else if ctl, err := controller.NewCTL(md); err != nil {
+	} else if srv, err := service.NewSRV(md); err != nil {
+		logger.Error("service.NewSRV", err)
+		panic(fmt.Errorf("service.NewSRV error: %v", err))
+	} else if ctl, err := controller.NewCTL(srv); err != nil {
 		// 컨트롤러 초기화
 		logger.Error("controller.NewCTL", err)
 		panic(fmt.Errorf("controller.NewCTL error: %v", err))

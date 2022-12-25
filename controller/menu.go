@@ -19,7 +19,7 @@ func (ctl *Controller) CreateMenu(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
-	if err := ctl.md.MenuModel.CreateMenu(menu); err != nil {
+	if err := ctl.srv.CreateMenu(menu); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
@@ -29,7 +29,7 @@ func (ctl *Controller) CreateMenu(c *gin.Context) {
 
 func (ctl *Controller) UpdateMenuByName(c *gin.Context) {
 	menuName := c.Param(UPDATE_MENU_PARAM_NAME)
-	menu, err := ctl.md.MenuModel.FindMenuByName(menuName)
+	menu, err := ctl.srv.FindMenuByName(menuName)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
@@ -39,7 +39,7 @@ func (ctl *Controller) UpdateMenuByName(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
-	if err := ctl.md.MenuModel.UpdateMenuByName(menuName, updateForMenu); err != nil {
+	if err := ctl.srv.UpdateMenuByName(menuName, updateForMenu); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
@@ -49,7 +49,7 @@ func (ctl *Controller) UpdateMenuByName(c *gin.Context) {
 
 func (ctl *Controller) DeleteMenuByName(c *gin.Context) {
 	menuName := c.Param(DELETE_MENU_PARAM_NAME)
-	if err := ctl.md.MenuModel.DeleteMenuByName(menuName); err != nil {
+	if err := ctl.srv.DeleteMenuByName(menuName); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
@@ -59,7 +59,7 @@ func (ctl *Controller) DeleteMenuByName(c *gin.Context) {
 
 func (ctl *Controller) GetMenuIsDeletedFalseSortBy(c *gin.Context) {
 	sort := c.Query(GET_MENU_LIST_QUERY_SORT)
-	menuList, err := ctl.md.MenuModel.FindMenuIsDeletedSortBy(true, sort)
+	menuList, err := ctl.srv.GetMenuIsDeletedFalseSortBy(sort)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
