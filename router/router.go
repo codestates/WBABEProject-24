@@ -66,7 +66,7 @@ func (p *Router) Idx() *gin.Engine {
 	{
 		menuGroup := ordererGroup.Group("/menu")
 		{
-			menuGroup.GET("/list", p.ct.GetMenuIsDeletedFalseOrderBy)
+			menuGroup.GET("/list", p.ct.GetMenuIsDeletedFalseSortBy)
 		}
 		orderGroup := ordererGroup.Group("/order")
 		{

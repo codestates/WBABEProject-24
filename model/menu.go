@@ -107,7 +107,7 @@ func (p *menuModel) FindMenuByName(name string) (Menu, error) {
 	return result, nil
 }
 
-func (p *menuModel) FindMenuIsDeletedOrderBy(exceptDeleted bool, orderBy string) ([]Menu, error) {
+func (p *menuModel) FindMenuIsDeletedSortBy(exceptDeleted bool, sortBy string) ([]Menu, error) {
 	var results []Menu
 	filter := bson.D{}
 	// 필터 설정 : 삭제된 메뉴 제외
@@ -116,7 +116,7 @@ func (p *menuModel) FindMenuIsDeletedOrderBy(exceptDeleted bool, orderBy string)
 	}
 	// 정렬 옵션 설정
 	var opts *options.FindOptions
-	if v, ok := p.orderByMap[orderBy]; ok {
+	if v, ok := p.orderByMap[sortBy]; ok {
 		opts = options.Find().SetSort(bson.D{{v.target, v.sort}})
 	}
 	cur, err := p.col.Find(context.TODO(), filter, opts)
