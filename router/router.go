@@ -56,13 +56,28 @@ func (p *Router) Idx() *gin.Engine {
 			menuGroup.PUT("/:name", p.ct.UpdateMenuByName)
 			menuGroup.DELETE("/:name", p.ct.DeleteMenuByName)
 		}
+		orderGroup := recipantGroup.Group("/order")
+		{
+			orderGroup.GET("/list", p.ct.GetOrderList)
+			orderGroup.PUT("/:seq/:status", p.ct.ChangeOrderStatus)
+		}
 	}
 	ordererGroup := e.Group("/orderer")
 	{
 		menuGroup := ordererGroup.Group("/menu")
 		{
 			menuGroup.GET("/list", p.ct.GetMenuIsDeletedFalseOrderBy)
-
+		}
+		orderGroup := ordererGroup.Group("/order")
+		{
+			orderGroup.GET("/list", p.ct.GetOrderList)
+			orderGroup.POST("", p.ct.CreateOrder)
+			orderGroup.PUT("/:seq/:type", p.ct.ChangeOrderMenu)
+		}
+		reviewGroup := ordererGroup.Group("/review")
+		{
+			reviewGroup.GET("/list/:menu", p.ct.GetReviewList)
+			reviewGroup.POST("", p.ct.CreateReview)
 		}
 	}
 

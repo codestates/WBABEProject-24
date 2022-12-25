@@ -8,23 +8,10 @@ import (
 )
 
 type Model struct {
-	client    *mongo.Client
-	MenuModel *menuModel
-	orderCol  *mongo.Collection
-	reviewCol *mongo.Collection
-}
-
-type Order struct {
-	Num      int    `json:"num" bson:"num"`
-	Date     string `json:"date" bson:"date"`
-	MenuName string `json:"menuName" bson:"menuName"`
-	Address  string `json:"address" bson:"address"`
-}
-
-type Review struct {
-	MenuName string `json:"menuName" bson:"menuName"`
-	Score    int    `json:"score" bson:"score"`
-	Comment  string `json:"comment" bson:"comment"`
+	client      *mongo.Client
+	MenuModel   *menuModel
+	OrderModel  *orderModel
+	ReviewModel *reviewModel
 }
 
 func NewModel(mgUrl string) (*Model, error) {
@@ -37,9 +24,9 @@ func NewModel(mgUrl string) (*Model, error) {
 		return nil, err
 	} else {
 		db := r.client.Database("oos")
-		r.orderCol = db.Collection("order")
+		r.OrderModel = NewOrderModel(db.Collection("order"))
 		r.MenuModel = NewMenuModel(db.Collection("menu"))
-		r.reviewCol = db.Collection("review")
+		r.ReviewModel = NewReviewModel(db.Collection("review"))
 	}
 
 	return r, nil
