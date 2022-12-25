@@ -29,7 +29,6 @@ const (
 
 type Order struct {
 	Seq      string             `json:"seq" bson:"seq"`
-	Count    uint32             `json:"count" bson:"count"`
 	MenuList []string           `json:"menuList" bson:"menuList" binding:"required"`
 	Address  string             `json:"address" bson:"address" binding:"required"`
 	Phone    string             `json:"phone" bson:"phone" binding:"required"`
@@ -89,8 +88,7 @@ func NewOrderModel(col *mongo.Collection) *orderModel {
 
 func (p *orderModel) CreateOrder(order Order) (string, error) {
 	// 주문 기본값 초기화
-	order.Count = uint32(atomic.AddInt32(&p.orderCounter, 1))
-	order.Seq = util.CreateSeqStr(order.Count)
+	order.Seq = util.CreateSeqStr(uint32(atomic.AddInt32(&p.orderCounter, 1)))
 	order.Status = ORDER_STATUS_WAITING
 	order.Date = primitive.NewDateTimeFromTime(time.Now())
 	// 주문 저장
