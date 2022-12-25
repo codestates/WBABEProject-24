@@ -170,6 +170,15 @@ const docTemplate = `{
                 "summary": "call ChangeOrderMenu, Change the Order menu and return result message by string.",
                 "parameters": [
                     {
+                        "description": "Menu name list",
+                        "name": "menuList",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.OrderMenuList"
+                        }
+                    },
+                    {
                         "type": "string",
                         "description": "Order sequence number",
                         "name": "seq",
@@ -517,6 +526,20 @@ const docTemplate = `{
         },
         "model.Order": {
             "type": "object"
+        },
+        "model.OrderMenuList": {
+            "type": "object",
+            "required": [
+                "menuList"
+            ],
+            "properties": {
+                "menuList": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
         },
         "model.Review": {
             "type": "object",

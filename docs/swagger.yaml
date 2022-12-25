@@ -14,6 +14,15 @@ definitions:
     type: object
   model.Order:
     type: object
+  model.OrderMenuList:
+    properties:
+      menuList:
+        items:
+          type: string
+        type: array
+    required:
+    - menuList
+    type: object
   model.Review:
     properties:
       comment:
@@ -98,6 +107,12 @@ paths:
       - application/json
       description: 주문의 메뉴를 변경하기 위한 기능
       parameters:
+      - description: Menu name list
+        in: body
+        name: menuList
+        required: true
+        schema:
+          $ref: '#/definitions/model.OrderMenuList'
       - description: Order sequence number
         in: path
         name: seq

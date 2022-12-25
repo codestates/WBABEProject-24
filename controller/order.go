@@ -65,6 +65,7 @@ func (ctl *Controller) GetOrderList(c *gin.Context) {
 // @name ChangeOrderMenu
 // @Accept json
 // @Produce json
+// @Param menuList body model.OrderMenuList true "Menu name list"
 // @Param seq path string true "Order sequence number"
 // @Param type path string true "Order change type [add|change]"
 // @Router /orderer/order/{seq}/{type} [put]
