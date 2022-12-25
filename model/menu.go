@@ -33,7 +33,7 @@ type Menu struct {
 	Price       int                `json:"price" bson:"price" binding:"required"`
 	HotGrade    int                `json:"hotGrade" bson:"hotGrade" binding:"required"`
 	IsAvailable *bool              `json:"isAvailable" bson:"isAvailable" binding:"required"`
-	IsRecommend *bool              `json:"isRecommend" bson:"isRecommend" binding:"omitempty"`
+	IsRecommend *bool              `json:"isRecommend" bson:"isRecommend"`
 	IsDeleted   *bool              `json:"isDeleted" bson:"isDeleted"`
 	AvgScore    float32            `json:"avgScore" bson:"avgScore"`
 	OrderCount  int                `json:"orderCount" bson:"orderCount"`
@@ -82,9 +82,7 @@ func (p *menuModel) CreateMenu(menu Menu) error {
 	// 메뉴 기본값 초기화
 	menu.AvgScore = 0
 	menu.OrderCount = 0
-	if menu.IsRecommend == nil {
-		menu.IsRecommend = util.NewFalse()
-	}
+	menu.IsRecommend = util.NewFalse()
 	menu.IsDeleted = util.NewFalse()
 	menu.CreateDate = primitive.NewDateTimeFromTime(time.Now())
 	// 메뉴 저장
