@@ -128,6 +128,9 @@ func (p *menuModel) FindMenuIsDeletedSortBy(exceptDeleted bool, sortBy string) (
 }
 
 func (p *menuModel) UpdateMenuByName(name string, menu Menu) error {
+	if name != menu.Name {
+		return fmt.Errorf("Menu name Can not be changed")
+	}
 	filter := bson.D{{"name", name}}
 	updateResult, err := p.col.UpdateOne(context.TODO(), filter, bson.D{{"$set", menu}})
 	if err != nil {
