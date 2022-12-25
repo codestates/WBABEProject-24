@@ -26,7 +26,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "sort type [recommend|score|mostOrder|new]",
+                        "description": "sort type [recommend|score|most|new]",
                         "name": "sort",
                         "in": "query"
                     }

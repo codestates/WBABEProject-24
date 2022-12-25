@@ -92,7 +92,7 @@ func (ctl *Controller) DeleteMenu(c *gin.Context) {
 // @Description Menu 객체 리스트를 반환하기 위한 기능
 // @name GetMenuList
 // @Produce json
-// @Param sort query string false "sort type [recommend|score|mostOrder|new]"
+// @Param sort query string false "sort type [recommend|score|most|new]"
 // @Router /orderer/menu/list [get]
 // @Success 200 {object} controller.SuccessResultJSON{data=[]model.Menu} "data: 메뉴 리스트"
 // @failure 400 {object} controller.ErrorResultJSON

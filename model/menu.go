@@ -51,7 +51,7 @@ func NewMenuModel(col *mongo.Collection) *menuModel {
 	m.orderByMap = make(map[string]MenuOrderBy)
 	m.orderByMap["recommend"] = MenuOrderBy{target: "isRecommend", sort: -1}
 	m.orderByMap["score"] = MenuOrderBy{target: "avgScore", sort: -1}
-	m.orderByMap["mostOrder"] = MenuOrderBy{target: "orderCount", sort: -1}
+	m.orderByMap["most"] = MenuOrderBy{target: "orderCount", sort: -1}
 	m.orderByMap["new"] = MenuOrderBy{target: "createDate", sort: -1}
 	return m
 }

@@ -39,7 +39,7 @@ paths:
     get:
       description: Menu 객체 리스트를 반환하기 위한 기능
       parameters:
-      - description: sort type [recommend|score|mostOrder|new]
+      - description: sort type [recommend|score|most|new]
         in: query
         name: sort
         type: string
