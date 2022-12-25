@@ -6,6 +6,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"codestates.wba-01/archoi/backend/oos/util"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -39,6 +40,15 @@ type Order struct {
 func (o *Order) IsChangeable() bool {
 	if o.Status == ORDER_STATUS_WAITING || o.Status == ORDER_STATUS_RECEIPT {
 		return true
+	}
+	return false
+}
+
+func (o *Order) IsContainMenu(menuName string) bool {
+	for _, v := range o.MenuList {
+		if v == menuName {
+			return true
+		}
 	}
 	return false
 }
@@ -77,15 +87,10 @@ func NewOrderModel(col *mongo.Collection) *orderModel {
 	return m
 }
 
-// 주문 일련번호 생성 함수
-func createSeqStr(orderCount uint32) string {
-	return fmt.Sprintf("%d-%010d", time.Now().Unix(), orderCount)
-}
-
 func (p *orderModel) CreateOrder(order Order) (string, error) {
 	// 주문 기본값 초기화
 	order.Count = atomic.AddUint32(&p.orderCounter, 1)
-	order.Seq = createSeqStr(order.Count)
+	order.Seq = util.CreateSeqStr(order.Count)
 	order.Status = ORDER_STATUS_WAITING
 	order.Date = primitive.NewDateTimeFromTime(time.Now())
 	// 주문 저장
