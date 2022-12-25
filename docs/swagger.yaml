@@ -22,7 +22,7 @@ definitions:
         type: string
       orderSeq:
         type: string
-      reviewNum:
+      reviewSeq:
         type: string
       score:
         type: integer

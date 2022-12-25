@@ -536,7 +536,7 @@ const docTemplate = `{
                 "orderSeq": {
                     "type": "string"
                 },
-                "reviewNum": {
+                "reviewSeq": {
                     "type": "string"
                 },
                 "score": {
