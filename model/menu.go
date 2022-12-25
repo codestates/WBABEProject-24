@@ -116,6 +116,8 @@ func (p *menuModel) FindMenuIsDeletedSortBy(exceptDeleted bool, sortBy string) (
 	var opts *options.FindOptions
 	if v, ok := p.orderByMap[sortBy]; ok {
 		opts = options.Find().SetSort(bson.D{{v.target, v.sort}})
+	} else {
+		return results, fmt.Errorf("Invalid sort type")
 	}
 	cur, err := p.col.Find(context.TODO(), filter, opts)
 	if err != nil {
