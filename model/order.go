@@ -59,7 +59,7 @@ type OrderMenuList struct {
 
 type orderModel struct {
 	col              *mongo.Collection
-	orderCounter     uint32
+	orderCounter     int32
 	orderStatusGroup map[string][]string
 }
 
@@ -89,13 +89,14 @@ func NewOrderModel(col *mongo.Collection) *orderModel {
 
 func (p *orderModel) CreateOrder(order Order) (string, error) {
 	// 주문 기본값 초기화
-	order.Count = atomic.AddUint32(&p.orderCounter, 1)
+	order.Count = uint32(atomic.AddInt32(&p.orderCounter, 1))
 	order.Seq = util.CreateSeqStr(order.Count)
 	order.Status = ORDER_STATUS_WAITING
 	order.Date = primitive.NewDateTimeFromTime(time.Now())
 	// 주문 저장
 	_, err := p.col.InsertOne(context.TODO(), order)
 	if err != nil {
+		atomic.AddInt32(&p.orderCounter, -1)
 		return "", err
 	}
 	// 주문 일련번호 반환
