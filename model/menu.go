@@ -35,7 +35,7 @@ type Menu struct {
 	IsAvailable *bool              `json:"isAvailable" bson:"isAvailable" binding:"required"`
 	IsRecommend *bool              `json:"isRecommend" bson:"isRecommend" binding:"omitempty"`
 	IsDeleted   *bool              `json:"isDeleted" bson:"isDeleted"`
-	AvgScore    int                `json:"avgScore" bson:"avgScore"`
+	AvgScore    float32            `json:"avgScore" bson:"avgScore"`
 	OrderCount  int                `json:"orderCount" bson:"orderCount"`
 	CreateDate  primitive.DateTime `json:"createDate" bson:"createDate"`
 }
