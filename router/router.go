@@ -4,7 +4,10 @@ import (
 	ctl "codestates.wba-01/archoi/backend/oos/controller"
 	"codestates.wba-01/archoi/backend/oos/logger"
 
+	"codestates.wba-01/archoi/backend/oos/docs"
 	"github.com/gin-gonic/gin"
+	swgFiles "github.com/swaggo/files"
+	ginSwg "github.com/swaggo/gin-swagger"
 )
 
 type Router struct {
@@ -47,14 +50,16 @@ func (p *Router) Idx() *gin.Engine {
 	e.Use(logger.GinLogger())
 	e.Use(logger.GinRecovery(true))
 	e.Use(CORS())
+	e.GET("/swagger/:any", ginSwg.WrapHandler(swgFiles.Handler))
+	docs.SwaggerInfo.Host = "172.28.118.49:8080"
 
 	recipantGroup := e.Group("/recipant")
 	{
 		menuGroup := recipantGroup.Group("/menu")
 		{
 			menuGroup.POST("", p.ct.CreateMenu)
-			menuGroup.PUT("/:name", p.ct.UpdateMenuByName)
-			menuGroup.DELETE("/:name", p.ct.DeleteMenuByName)
+			menuGroup.PUT("/:name", p.ct.UpdateMenu)
+			menuGroup.DELETE("/:name", p.ct.DeleteMenu)
 		}
 		orderGroup := recipantGroup.Group("/order")
 		{
@@ -66,7 +71,7 @@ func (p *Router) Idx() *gin.Engine {
 	{
 		menuGroup := ordererGroup.Group("/menu")
 		{
-			menuGroup.GET("/list", p.ct.GetMenuIsDeletedFalseSortBy)
+			menuGroup.GET("/list", p.ct.GetMenuList)
 		}
 		orderGroup := ordererGroup.Group("/order")
 		{
