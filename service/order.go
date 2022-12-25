@@ -79,6 +79,19 @@ func (srv *Service) ChangeOrderStatus(seq, status string) error {
 		return err
 	}
 	// 주문 상태 변경
+	switch status {
+	case model.ORDER_STATUS_COOKING:
+	case model.ORDER_STATUS_DELIVERY:
+	case model.ORDER_STATUS_RECEIPT:
+	case model.ORDER_STATUS_WAITING:
+	case model.ORDER_STATUS_COMPLETED:
+		// 메뉴의 OrderCount 증가
+		for _, name := range order.MenuList {
+			srv.md.MenuModel.UpdateMenuByNameIncOrderCount(name)
+		}
+	default:
+		return fmt.Errorf("Invalid Order status")
+	}
 	order.Status = status
 	// 주문 업데이트
 	if err := srv.md.OrderModel.UpdateOrderBySeq(order.Seq, order); err != nil {

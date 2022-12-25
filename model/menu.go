@@ -157,3 +157,15 @@ func (p *menuModel) DeleteMenuByName(name string) error {
 	}
 	return nil
 }
+
+func (p *menuModel) UpdateMenuByNameIncOrderCount(name string) error {
+	menu, err := p.FindMenuByName(name)
+	if err != nil {
+		return err
+	}
+	menu.OrderCount = menu.OrderCount + 1
+	if err := p.UpdateMenuByName(name, menu); err != nil {
+		return err
+	}
+	return nil
+}
