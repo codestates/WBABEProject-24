@@ -88,7 +88,7 @@ func Run() {
 		// 웹서버 설정
 		mapi := &http.Server{
 			Addr:           cf.Web.Port,
-			Handler:        rt.Idx(),
+			Handler:        rt.Idx(cf.Swagger.Host),
 			ReadTimeout:    5 * time.Second,
 			WriteTimeout:   10 * time.Second,
 			MaxHeaderBytes: 1 << 20,

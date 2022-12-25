@@ -43,7 +43,7 @@ func liteAuth() gin.HandlerFunc {
 	}
 }
 
-func (p *Router) Idx() *gin.Engine {
+func (p *Router) Idx(swaggerHost string) *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 
 	e := gin.Default()
@@ -51,7 +51,7 @@ func (p *Router) Idx() *gin.Engine {
 	e.Use(logger.GinRecovery(true))
 	e.Use(CORS())
 	e.GET("/swagger/:any", ginSwg.WrapHandler(swgFiles.Handler))
-	docs.SwaggerInfo.Host = "172.28.118.49:8080"
+	docs.SwaggerInfo.Host = swaggerHost
 
 	recipantGroup := e.Group("/recipant")
 	{

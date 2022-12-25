@@ -11,6 +11,9 @@ type Config struct {
 		Mode string
 		Port string
 	}
+	Swagger struct {
+		Host string
+	}
 	DB struct {
 		Host string
 	}
