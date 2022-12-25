@@ -11,7 +11,7 @@ import (
 )
 
 type Review struct {
-	ReviewSeq string `json:"reviewNum" bson:"reviewNum"`
+	ReviewSeq string `json:"reviewSeq" bson:"reviewSeq"`
 	OrderSeq  string `json:"orderSeq" bson:"orderSeq" binding:"required"`
 	MenuName  string `json:"menuName" bson:"menuName" binding:"required"`
 	Score     int    `json:"score" bson:"score" binding:"required"`
