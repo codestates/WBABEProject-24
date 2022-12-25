@@ -8,6 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	GET_REVIEW_LIST_PARAM_MENU_NAME = "menu"
+)
+
 func (ctl *Controller) CreateReview(c *gin.Context) {
 	var review model.Review
 	if err := c.ShouldBindJSON(&review); err != nil {
@@ -61,7 +65,7 @@ func (ctl *Controller) CreateReview(c *gin.Context) {
 }
 
 func (ctl *Controller) GetReviewList(c *gin.Context) {
-	menuName := c.Param("menu")
+	menuName := c.Param(GET_REVIEW_LIST_PARAM_MENU_NAME)
 	reviewList, err := ctl.md.ReviewModel.FindReviewListByMenu(menuName)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
