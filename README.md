@@ -29,7 +29,7 @@ go run main.go
 ![erd](https://user-images.githubusercontent.com/115597002/209469922-4c4f85fe-3065-4417-8754-569d51c6742d.PNG)
 
 ## 기능 소개
-- #### 전체 API 요약
+- ### 전체 API 요약
     ![전체 API 요약](https://user-images.githubusercontent.com/115597002/209684052-a4b78738-4fb6-4f39-974a-0ceef820987a.png)
 
 - ### 메뉴 생성
