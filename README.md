@@ -34,10 +34,10 @@ go run main.go
 
 - ### 메뉴 생성
   - **요청**
-  <details open>
-    <summary>요청 데이터</summary>
-    <b>body</b> : {"name":"치즈김밥","price":7000,"hotGrade":1,"isAvailable":true}
-  </details>
+    <details open>
+        <summary>요청 데이터</summary>
+        <b>body</b> : {"name":"치즈김밥","price":7000,"hotGrade":1,"isAvailable":true}
+    </details>
 
     ![메뉴 생성 요청](https://user-images.githubusercontent.com/115597002/209683063-3c7fc7a2-e47d-4ea4-8841-218ea17eaa2a.png)
   - **응답**
@@ -45,10 +45,10 @@ go run main.go
 
 - ### 메뉴 리스트 출력
   - **요청**
-   <details open>
-    <summary>요청 데이터</summary>
-    <b>query</b> : sort=[recommend(추천순)|score(평점순)|most(주문순)|new(최신순)]
-  </details>
+    <details open>
+        <summary>요청 데이터</summary>
+        <b>query</b> : sort=[recommend(추천순)|score(평점순)|most(주문순)|new(최신순)]
+    </details>
 
     ![메뉴 리스트 요청](https://user-images.githubusercontent.com/115597002/209682679-253965c2-014a-4737-8ae2-39c9a5257df6.png)
   - **응답**
