@@ -12,6 +12,10 @@ import (
 
 type Review struct {
 	ReviewSeq string `json:"reviewSeq" bson:"reviewSeq"`
+	/* 
+	struct 내에서 required 필드에 대해서 validation check 해주신 점 정말 좋습니다.
+	백엔드의 경우 validation check가 정말 중요합니다. 유저가 어떤 값을 입력하더라도 시스템은 다운되는 것 없이 동작해야 하니까요.
+	*/
 	OrderSeq  string `json:"orderSeq" bson:"orderSeq" binding:"required"`
 	MenuName  string `json:"menuName" bson:"menuName" binding:"required"`
 	Score     int    `json:"score" bson:"score" binding:"required"`
