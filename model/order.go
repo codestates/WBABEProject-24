@@ -13,6 +13,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+/*
+상수로 정의해주신 점 좋습니다.
+*/
 // 주문 상태 상수 정의
 const (
 	ORDER_STATUS_GROUP_ACTIVE    = "active"
@@ -88,6 +91,10 @@ func NewOrderModel(col *mongo.Collection) *orderModel {
 
 func (p *orderModel) CreateOrder(order Order) (string, error) {
 	// 주문 기본값 초기화
+	/*
+	이렇게 seq를 구성한다면 주문에 대해서 중복이 발생할 가능성은 없나요? 
+	동일한 시간에 주문이 들어온다면 중복된 주문 번호가 생기지는 않을까요?
+	*/
 	order.Seq = util.CreateSeqStr(uint32(atomic.AddInt32(&p.orderCounter, 1)))
 	order.Status = ORDER_STATUS_WAITING
 	order.Date = primitive.NewDateTimeFromTime(time.Now())

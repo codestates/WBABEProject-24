@@ -5,6 +5,9 @@ import (
 	"time"
 )
 
+/*
+단순하게 true, false bool 값을 리턴하는 것을 굳이 유틸함수로 만들 필요가 있나요?
+*/
 func NewTrue() *bool {
 	b := true
 	return &b
