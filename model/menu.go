@@ -109,7 +109,7 @@ func (p *menuModel) CreateMenu(menu Menu) error {
 
 func (p *menuModel) FindMenuByName(name string) (Menu, error) {
 	var result Menu
-	filter := bson.D{{"name", name}}
+	filter := bson.D{{"name", name}, {"isDeleted", false}}
 	err := p.col.FindOne(context.TODO(), filter).Decode(&result)
 	if err == mongo.ErrNoDocuments {
 		return result, fmt.Errorf("No Menu found given name: %s\n", name)
@@ -162,13 +162,6 @@ func (p *menuModel) DeleteMenuByName(name string) error {
 	menuForDelete, err := p.FindMenuByName(name)
 	if err != nil {
 		return err
-	}
-	/*
-		이렇게 체크하기 보다는, FindMenuByName 함수 안에서 IsDeleted가 True인 것은 제외하도록 필터를 구성하는 것은 어떨까요?
-		그렇게 한다면 메뉴를 삭제하는 로직에서는, 삭제된 것인지에 대해서는 신경을 쓰지 않아도 됩니다.
-	*/
-	if *menuForDelete.IsDeleted == true {
-		return fmt.Errorf("Already deleted Menu")
 	}
 	// 삭제 flag를 true로 설정 후, 업데이트
 	menuForDelete.IsDeleted = util.NewTrue()
