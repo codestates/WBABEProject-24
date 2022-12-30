@@ -32,19 +32,16 @@ type Menu struct {
 	/*
 		메뉴의 이름은 충분히 중복될 수 있습니다. 동일한 이름을 가지는 메뉴를 생성하고 싶다면, 어떻게 처리할 수 있을까요?
 	*/
-	Name        string  `json:"name" bson:"name" uri:"name" binding:"required"`
-	Price       int     `json:"price" bson:"price" binding:"required"`
-	HotGrade    int     `json:"hotGrade" bson:"hotGrade" binding:"required"`
-	IsAvailable *bool   `json:"isAvailable" bson:"isAvailable" binding:"required"`
-	IsRecommend *bool   `json:"isRecommend" bson:"isRecommend"`
-	IsDeleted   *bool   `json:"isDeleted" bson:"isDeleted"`
-	AvgScore    float32 `json:"avgScore" bson:"avgScore"`
-	OrderCount  int     `json:"orderCount" bson:"orderCount"`
-	/*
-		일반적으로 created_at, updated_at 두개의 필드를 동시에 저장합니다.
-		그래야 오브젝트가 언제 수정되었는지 파악할 수 있고, 무슨 일이 발생했는지에 대한 히스토리 추적도 가능합니다.
-	*/
-	CreateDate primitive.DateTime `json:"createDate" bson:"createDate"`
+	Name        string             `json:"name" bson:"name" uri:"name" binding:"required"`
+	Price       int                `json:"price" bson:"price" binding:"required"`
+	HotGrade    int                `json:"hotGrade" bson:"hotGrade" binding:"required"`
+	IsAvailable *bool              `json:"isAvailable" bson:"isAvailable" binding:"required"`
+	IsRecommend *bool              `json:"isRecommend" bson:"isRecommend"`
+	IsDeleted   *bool              `json:"isDeleted" bson:"isDeleted"`
+	AvgScore    float32            `json:"avgScore" bson:"avgScore"`
+	OrderCount  int                `json:"orderCount" bson:"orderCount"`
+	CreatedAt   primitive.DateTime `json:"createdAt" bson:"createdAt"`
+	UpdatedAt   primitive.DateTime `json:"updatedAt" bson:"updatedAt"`
 }
 
 type menuModel struct {
@@ -103,7 +100,8 @@ func (p *menuModel) CreateMenu(menu Menu) error {
 	menu.OrderCount = 0
 	menu.IsRecommend = util.NewFalse()
 	menu.IsDeleted = util.NewFalse()
-	menu.CreateDate = primitive.NewDateTimeFromTime(time.Now())
+	menu.CreatedAt = primitive.NewDateTimeFromTime(time.Now())
+	menu.UpdatedAt = menu.CreatedAt
 	// 메뉴 저장
 	_, err := p.col.InsertOne(context.TODO(), menu)
 	if err != nil {
@@ -157,6 +155,7 @@ func (p *menuModel) UpdateMenuByName(name string, menu Menu) error {
 		return fmt.Errorf("Menu name Can not be changed")
 	}
 	filter := bson.D{{"name", name}}
+	menu.UpdatedAt = primitive.NewDateTimeFromTime(time.Now())
 	updateResult, err := p.col.UpdateOne(context.TODO(), filter, bson.D{{"$set", menu}})
 	if err != nil {
 		return err
@@ -181,6 +180,7 @@ func (p *menuModel) DeleteMenuByName(name string) error {
 	}
 	// 삭제 flag를 true로 설정 후, 업데이트
 	menuForDelete.IsDeleted = util.NewTrue()
+	menuForDelete.UpdatedAt = primitive.NewDateTimeFromTime(time.Now())
 	if err := p.UpdateMenuByName(name, menuForDelete); err != nil {
 		return err
 	}

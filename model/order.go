@@ -31,12 +31,13 @@ const (
 )
 
 type Order struct {
-	Seq      string             `json:"seq" bson:"seq"`
-	MenuList []string           `json:"menuList" bson:"menuList" binding:"required"`
-	Address  string             `json:"address" bson:"address" binding:"required"`
-	Phone    string             `json:"phone" bson:"phone" binding:"required"`
-	Status   string             `json:"status" bson:"status"`
-	Date     primitive.DateTime `json:"date" bson:"date"`
+	Seq       string             `json:"seq" bson:"seq"`
+	MenuList  []string           `json:"menuList" bson:"menuList" binding:"required"`
+	Address   string             `json:"address" bson:"address" binding:"required"`
+	Phone     string             `json:"phone" bson:"phone" binding:"required"`
+	Status    string             `json:"status" bson:"status"`
+	CreatedAt primitive.DateTime `json:"createdAt" bson:"createdAt"`
+	UpdatedAt primitive.DateTime `json:"updatedAt" bson:"updatedAt"`
 }
 
 func (o *Order) IsChangeable() bool {
@@ -97,7 +98,8 @@ func (p *orderModel) CreateOrder(order Order) (string, error) {
 	*/
 	order.Seq = util.CreateSeqStr(uint32(atomic.AddInt32(&p.orderCounter, 1)))
 	order.Status = ORDER_STATUS_WAITING
-	order.Date = primitive.NewDateTimeFromTime(time.Now())
+	order.CreatedAt = primitive.NewDateTimeFromTime(time.Now())
+	order.UpdatedAt = order.CreatedAt
 	// 주문 저장
 	_, err := p.col.InsertOne(context.TODO(), order)
 	if err != nil {
@@ -142,6 +144,7 @@ func (p *orderModel) FindOrderListInStatus(statusGroup string) ([]Order, error) 
 
 func (p *orderModel) UpdateOrderBySeq(seq string, order Order) error {
 	filter := bson.D{{"seq", seq}}
+	order.UpdatedAt = primitive.NewDateTimeFromTime(time.Now())
 	updateResult, err := p.col.UpdateOne(context.TODO(), filter, bson.D{{"$set", order}})
 	if err != nil {
 		return err
