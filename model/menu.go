@@ -76,18 +76,6 @@ func (p *menuModel) CanOrder(menuameList []string) error {
 }
 
 func (p *menuModel) CreateMenu(menu Menu) error {
-	/*
-		Menu struct에서 Name 필드의 바인딩이 required로 되어 있습니다.
-		빈값이 들어온다면 자동으로 에러를 반환할 것 같은데 따로 처리하신 이유가 있을까요?
-
-		다음의 링크에서 아래의 내용을 확인해보실 수 있습니다.
-		You can also specify that specific fields are required. If a field is decorated with binding:"required" and has an empty value when binding, an error will be returned.
-
-		https://github.com/gin-gonic/gin#model-binding-and-validation
-	*/
-	if menu.Name == "" {
-		return fmt.Errorf("Require Menu name")
-	}
 	// 이미 존재하는 메뉴인지 체크
 	if _, err := p.FindMenuByName(menu.Name); err == nil {
 		return fmt.Errorf("Menu Already exist")
