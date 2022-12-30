@@ -34,7 +34,7 @@ func (ctl *Controller) CreateMenu(c *gin.Context) {
 		return
 	}
 	/*
-	자원이 생성되면 201 created status를 리턴하는 것이 일반적입니다.
+		자원이 생성되면 201 created status를 리턴하는 것이 일반적입니다.
 	*/
 	c.JSON(http.StatusOK, SuccessResultJSON{Message: "success"})
 	return

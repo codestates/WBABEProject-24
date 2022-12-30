@@ -30,21 +30,21 @@ type MenuOrderBy struct {
 
 type Menu struct {
 	/*
-	메뉴의 이름은 충분히 중복될 수 있습니다. 동일한 이름을 가지는 메뉴를 생성하고 싶다면, 어떻게 처리할 수 있을까요?
+		메뉴의 이름은 충분히 중복될 수 있습니다. 동일한 이름을 가지는 메뉴를 생성하고 싶다면, 어떻게 처리할 수 있을까요?
 	*/
-	Name        string             `json:"name" bson:"name" uri:"name" binding:"required"`
-	Price       int                `json:"price" bson:"price" binding:"required"`
-	HotGrade    int                `json:"hotGrade" bson:"hotGrade" binding:"required"`
-	IsAvailable *bool              `json:"isAvailable" bson:"isAvailable" binding:"required"`
-	IsRecommend *bool              `json:"isRecommend" bson:"isRecommend"`
-	IsDeleted   *bool              `json:"isDeleted" bson:"isDeleted"`
-	AvgScore    float32            `json:"avgScore" bson:"avgScore"`
-	OrderCount  int                `json:"orderCount" bson:"orderCount"`
-	/* 
-	일반적으로 created_at, updated_at 두개의 필드를 동시에 저장합니다.
-	그래야 오브젝트가 언제 수정되었는지 파악할 수 있고, 무슨 일이 발생했는지에 대한 히스토리 추적도 가능합니다.
+	Name        string  `json:"name" bson:"name" uri:"name" binding:"required"`
+	Price       int     `json:"price" bson:"price" binding:"required"`
+	HotGrade    int     `json:"hotGrade" bson:"hotGrade" binding:"required"`
+	IsAvailable *bool   `json:"isAvailable" bson:"isAvailable" binding:"required"`
+	IsRecommend *bool   `json:"isRecommend" bson:"isRecommend"`
+	IsDeleted   *bool   `json:"isDeleted" bson:"isDeleted"`
+	AvgScore    float32 `json:"avgScore" bson:"avgScore"`
+	OrderCount  int     `json:"orderCount" bson:"orderCount"`
+	/*
+		일반적으로 created_at, updated_at 두개의 필드를 동시에 저장합니다.
+		그래야 오브젝트가 언제 수정되었는지 파악할 수 있고, 무슨 일이 발생했는지에 대한 히스토리 추적도 가능합니다.
 	*/
-	CreateDate  primitive.DateTime `json:"createDate" bson:"createDate"`
+	CreateDate primitive.DateTime `json:"createDate" bson:"createDate"`
 }
 
 type menuModel struct {
@@ -83,13 +83,13 @@ func (p *menuModel) IsOrderable(menuameList []string) error {
 
 func (p *menuModel) CreateMenu(menu Menu) error {
 	/*
-	Menu struct에서 Name 필드의 바인딩이 required로 되어 있습니다. 
-	빈값이 들어온다면 자동으로 에러를 반환할 것 같은데 따로 처리하신 이유가 있을까요?
+		Menu struct에서 Name 필드의 바인딩이 required로 되어 있습니다.
+		빈값이 들어온다면 자동으로 에러를 반환할 것 같은데 따로 처리하신 이유가 있을까요?
 
-	다음의 링크에서 아래의 내용을 확인해보실 수 있습니다.
-	You can also specify that specific fields are required. If a field is decorated with binding:"required" and has an empty value when binding, an error will be returned.
+		다음의 링크에서 아래의 내용을 확인해보실 수 있습니다.
+		You can also specify that specific fields are required. If a field is decorated with binding:"required" and has an empty value when binding, an error will be returned.
 
-	https://github.com/gin-gonic/gin#model-binding-and-validation
+		https://github.com/gin-gonic/gin#model-binding-and-validation
 	*/
 	if menu.Name == "" {
 		return fmt.Errorf("Require Menu name")
@@ -150,8 +150,8 @@ func (p *menuModel) FindMenuIsDeletedSortBy(exceptDeleted bool, sortBy string) (
 
 func (p *menuModel) UpdateMenuByName(name string, menu Menu) error {
 	/*
-	메뉴의 이름을 변경하고 싶지 않다면, 애초에 값을 받을 수 없도록 구성하는 것은 어떨까요?
-	예를들면, update용 메뉴 struct를 새로 생성하고 name 필드를 제외하는 방법이 있을 것 같습니다.
+		메뉴의 이름을 변경하고 싶지 않다면, 애초에 값을 받을 수 없도록 구성하는 것은 어떨까요?
+		예를들면, update용 메뉴 struct를 새로 생성하고 name 필드를 제외하는 방법이 있을 것 같습니다.
 	*/
 	if name != menu.Name {
 		return fmt.Errorf("Menu name Can not be changed")
@@ -172,9 +172,9 @@ func (p *menuModel) DeleteMenuByName(name string) error {
 	if err != nil {
 		return err
 	}
-	/* 
-	이렇게 체크하기 보다는, FindMenuByName 함수 안에서 IsDeleted가 True인 것은 제외하도록 필터를 구성하는 것은 어떨까요?
-	그렇게 한다면 메뉴를 삭제하는 로직에서는, 삭제된 것인지에 대해서는 신경을 쓰지 않아도 됩니다.
+	/*
+		이렇게 체크하기 보다는, FindMenuByName 함수 안에서 IsDeleted가 True인 것은 제외하도록 필터를 구성하는 것은 어떨까요?
+		그렇게 한다면 메뉴를 삭제하는 로직에서는, 삭제된 것인지에 대해서는 신경을 쓰지 않아도 됩니다.
 	*/
 	if *menuForDelete.IsDeleted == true {
 		return fmt.Errorf("Already deleted Menu")
@@ -186,7 +186,6 @@ func (p *menuModel) DeleteMenuByName(name string) error {
 	}
 	return nil
 }
-
 
 /*
 IncreaseOrderCount와 같이 좀더 직관적이고 간단하게 네이밍 할 수 있겠습니다.
