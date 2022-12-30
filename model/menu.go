@@ -60,10 +60,7 @@ func NewMenuModel(col *mongo.Collection) *menuModel {
 	return m
 }
 
-/*
-1. CanOrder라는 네이밍을 이용하는 건 어떨까요? 조금 더 직관적이라고 생각해요.
-*/
-func (p *menuModel) IsOrderable(menuameList []string) error {
+func (p *menuModel) CanOrder(menuameList []string) error {
 	for _, name := range menuameList {
 		menu, err := p.FindMenuByName(name)
 		// 존재하는 메뉴인지 체크
@@ -122,13 +119,8 @@ func (p *menuModel) FindMenuByName(name string) (Menu, error) {
 	return result, nil
 }
 
-func (p *menuModel) FindMenuIsDeletedSortBy(exceptDeleted bool, sortBy string) ([]Menu, error) {
+func (p *menuModel) FindMenuListSortBy(sortBy string) ([]Menu, error) {
 	var results []Menu
-	filter := bson.D{}
-	// 필터 설정 : 삭제된 메뉴 제외
-	if exceptDeleted == true {
-		filter = bson.D{{"isDeleted", false}}
-	}
 	// 정렬 옵션 설정
 	var opts *options.FindOptions
 	if v, ok := p.orderByMap[sortBy]; ok {
@@ -136,7 +128,7 @@ func (p *menuModel) FindMenuIsDeletedSortBy(exceptDeleted bool, sortBy string) (
 	} else {
 		return results, fmt.Errorf("Invalid sort type")
 	}
-	cur, err := p.col.Find(context.TODO(), filter, opts)
+	cur, err := p.col.Find(context.TODO(), bson.D{{"isDeleted", false}}, opts)
 	if err != nil {
 		return results, err
 	}
@@ -187,10 +179,7 @@ func (p *menuModel) DeleteMenuByName(name string) error {
 	return nil
 }
 
-/*
-IncreaseOrderCount와 같이 좀더 직관적이고 간단하게 네이밍 할 수 있겠습니다.
-*/
-func (p *menuModel) UpdateMenuByNameIncOrderCount(name string) error {
+func (p *menuModel) IncreaseOrderCount(name string) error {
 	menu, err := p.FindMenuByName(name)
 	if err != nil {
 		return err

@@ -98,7 +98,7 @@ func (ctl *Controller) DeleteMenu(c *gin.Context) {
 // @failure 400 {object} controller.ErrorResultJSON
 func (ctl *Controller) GetMenuList(c *gin.Context) {
 	sort := c.Query(GET_MENU_LIST_QUERY_SORT)
-	menuList, err := ctl.srv.GetMenuIsDeletedFalseSortBy(sort)
+	menuList, err := ctl.srv.GetMenuListSortBy(sort)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, ErrorResultJSON{Error: err.Error()})
 		return

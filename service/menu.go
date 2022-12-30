@@ -38,8 +38,8 @@ func (srv *Service) DeleteMenuByName(name string) error {
 	return nil
 }
 
-func (srv *Service) GetMenuIsDeletedFalseSortBy(sort string) ([]model.Menu, error) {
-	menuList, err := srv.md.MenuModel.FindMenuIsDeletedSortBy(true, sort)
+func (srv *Service) GetMenuListSortBy(sort string) ([]model.Menu, error) {
+	menuList, err := srv.md.MenuModel.FindMenuListSortBy(sort)
 	if err != nil {
 		return nil, err
 	}

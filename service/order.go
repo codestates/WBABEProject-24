@@ -13,7 +13,7 @@ const (
 
 func (srv *Service) CreateOrder(order model.Order) (string, error) {
 	// 메뉴 체크
-	if err := srv.md.MenuModel.IsOrderable(order.MenuList); err != nil {
+	if err := srv.md.MenuModel.CanOrder(order.MenuList); err != nil {
 		return "", err
 	}
 	// 주문 저장
@@ -55,7 +55,7 @@ func (srv *Service) ChangeOrderMenu(orderSeq, changeType string, menuListUpdate 
 			return "", fmt.Errorf("Order Not changeable current status: [%s]", order.Status)
 		} else if changeType == CHANGE_ORDER_TYPE_ADD {
 			// 신규 주문으로 처리
-			if err := srv.md.MenuModel.IsOrderable(menuListUpdate.MenuList); err != nil {
+			if err := srv.md.MenuModel.CanOrder(menuListUpdate.MenuList); err != nil {
 				return "", err
 			}
 			newSeq, err := srv.md.OrderModel.CreateOrder(order)
@@ -87,7 +87,7 @@ func (srv *Service) ChangeOrderStatus(seq, status string) error {
 	case model.ORDER_STATUS_COMPLETED:
 		// 메뉴의 OrderCount 증가
 		for _, name := range order.MenuList {
-			srv.md.MenuModel.UpdateMenuByNameIncOrderCount(name)
+			srv.md.MenuModel.IncreaseOrderCount(name)
 		}
 	default:
 		return fmt.Errorf("Invalid Order status")
