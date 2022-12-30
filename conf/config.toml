@@ -10,7 +10,7 @@ host = "mongodb://localhost:27017"
 
 [log]
 level = "debug"
-fpath = "./logs/go-loger"
+fpath = "./logs/go-logger"
 msize = 2000
 mage = 7
 mbackup = 5
