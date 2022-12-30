@@ -35,7 +35,7 @@ func (ctl *Controller) CreateOrder(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, ErrorResultJSON{Error: err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, SuccessResultJSON{Message: "success", Data: seq})
+	c.JSON(http.StatusCreated, SuccessResultJSON{Message: "success", Data: seq})
 	return
 }
 

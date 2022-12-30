@@ -31,7 +31,7 @@ func (ctl *Controller) CreateReview(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, ErrorResultJSON{Error: err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, SuccessResultJSON{Message: "success"})
+	c.JSON(http.StatusCreated, SuccessResultJSON{Message: "success"})
 	return
 }
 
