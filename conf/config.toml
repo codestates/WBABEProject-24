@@ -3,7 +3,7 @@ mode = "dev"
 port = ":8080"
 
 [swagger]
-host = "172.28.118.49:8080"
+host = "localhost:8080"
 
 [db]
 host = "mongodb://localhost:27017"
