@@ -44,6 +44,19 @@ type Menu struct {
 	UpdatedAt   primitive.DateTime `json:"updatedAt" bson:"updatedAt"`
 }
 
+type MenuForUpdate struct {
+	Name        string
+	Price       int     `json:"price" bson:"price"`
+	HotGrade    int     `json:"hotGrade" bson:"hotGrade"`
+	IsAvailable *bool   `json:"isAvailable" bson:"isAvailable"`
+	IsRecommend *bool   `json:"isRecommend" bson:"isRecommend"`
+	IsDeleted   *bool   `json:"isDeleted" bson:"isDeleted"`
+	AvgScore    float32 `json:"avgScore" bson:"avgScore"`
+	OrderCount  int     `json:"orderCount" bson:"orderCount"`
+	CreatedAt   primitive.DateTime
+	UpdatedAt   primitive.DateTime
+}
+
 type menuModel struct {
 	col        *mongo.Collection
 	orderByMap map[string]MenuOrderBy
@@ -128,14 +141,7 @@ func (p *menuModel) FindMenuListSortBy(sortBy string) ([]Menu, error) {
 	return results, nil
 }
 
-func (p *menuModel) UpdateMenuByName(name string, menu Menu) error {
-	/*
-		메뉴의 이름을 변경하고 싶지 않다면, 애초에 값을 받을 수 없도록 구성하는 것은 어떨까요?
-		예를들면, update용 메뉴 struct를 새로 생성하고 name 필드를 제외하는 방법이 있을 것 같습니다.
-	*/
-	if name != menu.Name {
-		return fmt.Errorf("Menu name Can not be changed")
-	}
+func (p *menuModel) UpdateMenuByName(name string, menu MenuForUpdate) error {
 	filter := bson.D{{"name", name}}
 	menu.UpdatedAt = primitive.NewDateTimeFromTime(time.Now())
 	updateResult, err := p.col.UpdateOne(context.TODO(), filter, bson.D{{"$set", menu}})
@@ -157,7 +163,7 @@ func (p *menuModel) DeleteMenuByName(name string) error {
 	// 삭제 flag를 true로 설정 후, 업데이트
 	menuForDelete.IsDeleted = util.NewTrue()
 	menuForDelete.UpdatedAt = primitive.NewDateTimeFromTime(time.Now())
-	if err := p.UpdateMenuByName(name, menuForDelete); err != nil {
+	if err := p.UpdateMenuByName(name, MenuForUpdate(menuForDelete)); err != nil {
 		return err
 	}
 	return nil
@@ -169,7 +175,7 @@ func (p *menuModel) IncreaseOrderCount(name string) error {
 		return err
 	}
 	menu.OrderCount = menu.OrderCount + 1
-	if err := p.UpdateMenuByName(name, menu); err != nil {
+	if err := p.UpdateMenuByName(name, MenuForUpdate(menu)); err != nil {
 		return err
 	}
 	return nil

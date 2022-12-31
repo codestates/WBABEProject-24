@@ -24,7 +24,7 @@ func (srv *Service) FindMenuByName(name string) (model.Menu, error) {
 	return model, nil
 }
 
-func (srv *Service) UpdateMenuByName(name string, updateForMenu model.Menu) error {
+func (srv *Service) UpdateMenuByName(name string, updateForMenu model.MenuForUpdate) error {
 	if err := srv.md.MenuModel.UpdateMenuByName(name, updateForMenu); err != nil {
 		return err
 	}

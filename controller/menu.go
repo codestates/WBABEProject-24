@@ -55,7 +55,7 @@ func (ctl *Controller) UpdateMenu(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, ErrorResultJSON{Error: err.Error()})
 		return
 	}
-	updateForMenu := menu
+	updateForMenu := model.MenuForUpdate(menu)
 	if err := c.ShouldBindJSON(&updateForMenu); err != nil {
 		c.JSON(http.StatusBadRequest, ErrorResultJSON{Error: err.Error()})
 		return

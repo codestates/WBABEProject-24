@@ -38,7 +38,7 @@ func (srv *Service) CreateReview(review model.Review) error {
 		return err
 	}
 	menu.AvgScore = avgScore
-	if err := srv.md.MenuModel.UpdateMenuByName(menu.Name, menu); err != nil {
+	if err := srv.md.MenuModel.UpdateMenuByName(menu.Name, model.MenuForUpdate(menu)); err != nil {
 		return err
 	}
 	return nil
