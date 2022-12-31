@@ -31,6 +31,10 @@ type MenuOrderBy struct {
 type Menu struct {
 	/*
 		메뉴의 이름은 충분히 중복될 수 있습니다. 동일한 이름을 가지는 메뉴를 생성하고 싶다면, 어떻게 처리할 수 있을까요?
+		-----------------
+		메뉴 이름은 중복되지 않는 것으로 전제하고 프로젝트를 수행했습니다.
+		동일한 이름의 메뉴를 생성하고자 한다면, 메뉴를 구분할 ID 필드를 새로 추가하거나
+		SubName 필드를 추가하여 처리할 수 있을 것으로 생각합니다.
 	*/
 	Name        string             `json:"name" bson:"name" uri:"name" binding:"required"`
 	Price       int                `json:"price" bson:"price" binding:"required"`
