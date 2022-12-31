@@ -20,7 +20,7 @@ const (
 // @Accept json
 // @Produce json
 // @Param menu body model.Menu true "Menu data"
-// @Router /recipant/menu [post]
+// @Router /v1/menus [post]
 // @Success 200 {object} controller.SuccessResultJSON
 // @failure 400 {object} controller.ErrorResultJSON
 func (ctl *Controller) CreateMenu(c *gin.Context) {
@@ -45,7 +45,7 @@ func (ctl *Controller) CreateMenu(c *gin.Context) {
 // @Produce json
 // @Param name path string true "Menu name for update"
 // @Param menu body model.Menu true "Menu data for update"
-// @Router /recipant/menu/{name} [put]
+// @Router /v1/menus/{name} [put]
 // @Success 200 {object} controller.SuccessResultJSON
 // @failure 400 {object} controller.ErrorResultJSON
 func (ctl *Controller) UpdateMenu(c *gin.Context) {
@@ -74,7 +74,7 @@ func (ctl *Controller) UpdateMenu(c *gin.Context) {
 // @name DeleteMenu
 // @Produce json
 // @Param name path string true "Menu name for delete"
-// @Router /recipant/menu/{name} [delete]
+// @Router /v1/menus/{name} [delete]
 // @Success 200 {object} controller.SuccessResultJSON
 // @failure 400 {object} controller.ErrorResultJSON
 func (ctl *Controller) DeleteMenu(c *gin.Context) {
@@ -93,7 +93,7 @@ func (ctl *Controller) DeleteMenu(c *gin.Context) {
 // @name GetMenuList
 // @Produce json
 // @Param sort query string false "sort type [recommend|score|most|new]"
-// @Router /orderer/menu/list [get]
+// @Router /v1/menus [get]
 // @Success 200 {object} controller.SuccessResultJSON{data=[]model.Menu} "data: 메뉴 리스트"
 // @failure 400 {object} controller.ErrorResultJSON
 func (ctl *Controller) GetMenuList(c *gin.Context) {

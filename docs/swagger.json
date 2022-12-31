@@ -4,7 +4,7 @@
         "contact": {}
     },
     "paths": {
-        "/orderer/menu/list": {
+        "/v1/menus": {
             "get": {
                 "description": "Menu 객체 리스트를 반환하기 위한 기능",
                 "produces": [
@@ -48,252 +48,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/orderer/order": {
-            "post": {
-                "description": "주문 객체를 생성하기 위한 기능",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "call CreateOrder, Create the Order object and return result message by string.",
-                "parameters": [
-                    {
-                        "description": "Order data",
-                        "name": "order",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.Order"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "data: 생성된 주문 일련번호",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/controller.SuccessResultJSON"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/controller.ErrorResultJSON"
-                        }
-                    }
-                }
-            }
-        },
-        "/orderer/order/list": {
-            "get": {
-                "description": "주문 상태에 해당하는 리스트를 반환하는 기능",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "call GetOrderList, return the Order object list.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Order status [active|deactive|complete|all]",
-                        "name": "status",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "data: status에 해당하는 주문 리스트",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/controller.SuccessResultJSON"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.Order"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/controller.ErrorResultJSON"
-                        }
-                    }
-                }
-            }
-        },
-        "/orderer/order/{seq}/{type}": {
-            "put": {
-                "description": "주문의 메뉴를 변경하기 위한 기능",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "call ChangeOrderMenu, Change the Order menu and return result message by string.",
-                "parameters": [
-                    {
-                        "description": "Menu name list",
-                        "name": "menuList",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.OrderMenuList"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Order sequence number",
-                        "name": "seq",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Order change type [add|change]",
-                        "name": "type",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "새로운 주문 일련번호",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/controller.SuccessResultJSON"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/controller.ErrorResultJSON"
-                        }
-                    }
-                }
-            }
-        },
-        "/orderer/review": {
-            "post": {
-                "description": "리뷰 객체를 생성하기 위한 기능",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "call CreateReview, Create the Review object and return result message by string.",
-                "parameters": [
-                    {
-                        "description": "Review data",
-                        "name": "review",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.Review"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controller.SuccessResultJSON"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/controller.ErrorResultJSON"
-                        }
-                    }
-                }
-            }
-        },
-        "/orderer/review/list/{menu}": {
-            "get": {
-                "description": "메뉴에 해당하는 리뷰 리스트를 반환하기 위한 기능",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "call GetReviewList, return the List of reviews corresponding to the menu.",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Menu name",
-                        "name": "menu",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "data: 메뉴에 해당하는 리뷰 리스트",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/controller.SuccessResultJSON"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.Review"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/controller.ErrorResultJSON"
-                        }
-                    }
-                }
-            }
-        },
-        "/recipant/menu": {
+            },
             "post": {
                 "description": "Menu 객체를 생성하기 위한 기능",
                 "consumes": [
@@ -330,7 +85,7 @@
                 }
             }
         },
-        "/recipant/menu/{name}": {
+        "/v1/menus/{name}": {
             "put": {
                 "description": "Menu 객체를 업데이트하기 위한 기능",
                 "consumes": [
@@ -404,7 +159,7 @@
                 }
             }
         },
-        "/recipant/order/list": {
+        "/v1/orders": {
             "get": {
                 "description": "주문 상태에 해당하는 리스트를 반환하는 기능",
                 "produces": [
@@ -414,7 +169,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Order status [active|deactive|complete|all]",
+                        "description": "Order status [active|complete|all]",
                         "name": "status",
                         "in": "query",
                         "required": true
@@ -449,9 +204,119 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "주문 객체를 생성하기 위한 기능",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "call CreateOrder, Create the Order object and return result message by string.",
+                "parameters": [
+                    {
+                        "description": "Order data",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Order"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "data: 생성된 주문 일련번호",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/controller.SuccessResultJSON"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResultJSON"
+                        }
+                    }
+                }
             }
         },
-        "/recipant/order/{seq}/{status}": {
+        "/v1/orders/menu/{seq}/{type}": {
+            "put": {
+                "description": "주문의 메뉴를 변경하기 위한 기능",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "call ChangeOrderMenu, Change the Order menu and return result message by string.",
+                "parameters": [
+                    {
+                        "description": "Menu name list",
+                        "name": "menuList",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.OrderMenuList"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order sequence number",
+                        "name": "seq",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order change type [add|change]",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "새로운 주문 일련번호",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/controller.SuccessResultJSON"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResultJSON"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/orders/status/{seq}/{status}": {
             "put": {
                 "description": "주문의 상태를 변경하기 위한 기능",
                 "produces": [
@@ -479,6 +344,90 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/controller.SuccessResultJSON"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResultJSON"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/reviews": {
+            "post": {
+                "description": "리뷰 객체를 생성하기 위한 기능",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "call CreateReview, Create the Review object and return result message by string.",
+                "parameters": [
+                    {
+                        "description": "Review data",
+                        "name": "review",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Review"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.SuccessResultJSON"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResultJSON"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/reviews/{menu}": {
+            "get": {
+                "description": "메뉴에 해당하는 리뷰 리스트를 반환하기 위한 기능",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "call GetReviewList, return the List of reviews corresponding to the menu.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Menu name",
+                        "name": "menu",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "data: 메뉴에 해당하는 리뷰 리스트",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/controller.SuccessResultJSON"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Review"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -530,30 +479,7 @@
             }
         },
         "model.Review": {
-            "type": "object",
-            "required": [
-                "comment",
-                "menuName",
-                "orderSeq",
-                "score"
-            ],
-            "properties": {
-                "comment": {
-                    "type": "string"
-                },
-                "menuName": {
-                    "type": "string"
-                },
-                "orderSeq": {
-                    "type": "string"
-                },
-                "reviewSeq": {
-                    "type": "string"
-                },
-                "score": {
-                    "type": "integer"
-                }
-            }
+            "type": "object"
         }
     }
 }

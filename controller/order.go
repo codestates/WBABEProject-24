@@ -21,7 +21,7 @@ const (
 // @Accept json
 // @Produce json
 // @Param order body model.Order true "Order data"
-// @Router /orderer/order [post]
+// @Router /v1/orders [post]
 // @Success 200 {object} controller.SuccessResultJSON{data=string} "data: 생성된 주문 일련번호"
 // @failure 400 {object} controller.ErrorResultJSON
 func (ctl *Controller) CreateOrder(c *gin.Context) {
@@ -45,8 +45,7 @@ func (ctl *Controller) CreateOrder(c *gin.Context) {
 // @name GetOrderList
 // @Produce json
 // @Param status query string true "Order status [active|complete|all]"
-// @Router /recipant/order/list [get]
-// @Router /orderer/order/list [get]
+// @Router /v1/orders [get]
 // @Success 200 {object} controller.SuccessResultJSON{data=[]model.Order} "data: status에 해당하는 주문 리스트"
 // @failure 400 {object} controller.ErrorResultJSON
 func (ctl *Controller) GetOrderList(c *gin.Context) {
@@ -68,7 +67,7 @@ func (ctl *Controller) GetOrderList(c *gin.Context) {
 // @Param menuList body model.OrderMenuList true "Menu name list"
 // @Param seq path string true "Order sequence number"
 // @Param type path string true "Order change type [add|change]"
-// @Router /orderer/order/{seq}/{type} [put]
+// @Router /v1/orders/menu/{seq}/{type} [put]
 // @Success 200 {object} controller.SuccessResultJSON
 // @Success 200 {object} controller.SuccessResultJSON{data=string} "새로운 주문 일련번호"
 // @failure 400 {object} controller.ErrorResultJSON
@@ -102,7 +101,7 @@ func (ctl *Controller) ChangeOrderMenu(c *gin.Context) {
 // @Produce json
 // @Param seq path string true "Order sequence number"
 // @Param status path string true "status value to change [대기|주문|조리|배달|완료]"
-// @Router /recipant/order/{seq}/{status} [put]
+// @Router /v1/orders/status/{seq}/{status} [put]
 // @Success 200 {object} controller.SuccessResultJSON
 // @failure 400 {object} controller.ErrorResultJSON
 func (ctl *Controller) ChangeOrderStatus(c *gin.Context) {

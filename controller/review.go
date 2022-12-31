@@ -18,7 +18,7 @@ const (
 // @Accept json
 // @Produce json
 // @Param review body model.Review true "Review data"
-// @Router /orderer/review [post]
+// @Router /v1/reviews [post]
 // @Success 200 {object} controller.SuccessResultJSON
 // @failure 400 {object} controller.ErrorResultJSON
 func (ctl *Controller) CreateReview(c *gin.Context) {
@@ -41,7 +41,7 @@ func (ctl *Controller) CreateReview(c *gin.Context) {
 // @name GetReviewList
 // @Produce json
 // @Param menu path string true "Menu name"
-// @Router /orderer/review/list/{menu} [get]
+// @Router /v1/reviews/{menu} [get]
 // @Success 200 {object} controller.SuccessResultJSON{data=[]model.Review} "data: 메뉴에 해당하는 리뷰 리스트"
 // @failure 400 {object} controller.ErrorResultJSON
 func (ctl *Controller) GetReviewList(c *gin.Context) {

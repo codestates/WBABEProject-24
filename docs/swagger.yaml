@@ -24,27 +24,11 @@ definitions:
     - menuList
     type: object
   model.Review:
-    properties:
-      comment:
-        type: string
-      menuName:
-        type: string
-      orderSeq:
-        type: string
-      reviewSeq:
-        type: string
-      score:
-        type: integer
-    required:
-    - comment
-    - menuName
-    - orderSeq
-    - score
     type: object
 info:
   contact: {}
 paths:
-  /orderer/menu/list:
+  /v1/menus:
     get:
       description: Menu 객체 리스트를 반환하기 위한 기능
       parameters:
@@ -71,159 +55,6 @@ paths:
           schema:
             $ref: '#/definitions/controller.ErrorResultJSON'
       summary: call GetMenuList, return the Menu object list.
-  /orderer/order:
-    post:
-      consumes:
-      - application/json
-      description: 주문 객체를 생성하기 위한 기능
-      parameters:
-      - description: Order data
-        in: body
-        name: order
-        required: true
-        schema:
-          $ref: '#/definitions/model.Order'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'data: 생성된 주문 일련번호'
-          schema:
-            allOf:
-            - $ref: '#/definitions/controller.SuccessResultJSON'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/controller.ErrorResultJSON'
-      summary: call CreateOrder, Create the Order object and return result message
-        by string.
-  /orderer/order/{seq}/{type}:
-    put:
-      consumes:
-      - application/json
-      description: 주문의 메뉴를 변경하기 위한 기능
-      parameters:
-      - description: Menu name list
-        in: body
-        name: menuList
-        required: true
-        schema:
-          $ref: '#/definitions/model.OrderMenuList'
-      - description: Order sequence number
-        in: path
-        name: seq
-        required: true
-        type: string
-      - description: Order change type [add|change]
-        in: path
-        name: type
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 새로운 주문 일련번호
-          schema:
-            allOf:
-            - $ref: '#/definitions/controller.SuccessResultJSON'
-            - properties:
-                data:
-                  type: string
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/controller.ErrorResultJSON'
-      summary: call ChangeOrderMenu, Change the Order menu and return result message
-        by string.
-  /orderer/order/list:
-    get:
-      description: 주문 상태에 해당하는 리스트를 반환하는 기능
-      parameters:
-      - description: Order status [active|deactive|complete|all]
-        in: query
-        name: status
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'data: status에 해당하는 주문 리스트'
-          schema:
-            allOf:
-            - $ref: '#/definitions/controller.SuccessResultJSON'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/model.Order'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/controller.ErrorResultJSON'
-      summary: call GetOrderList, return the Order object list.
-  /orderer/review:
-    post:
-      consumes:
-      - application/json
-      description: 리뷰 객체를 생성하기 위한 기능
-      parameters:
-      - description: Review data
-        in: body
-        name: review
-        required: true
-        schema:
-          $ref: '#/definitions/model.Review'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/controller.SuccessResultJSON'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/controller.ErrorResultJSON'
-      summary: call CreateReview, Create the Review object and return result message
-        by string.
-  /orderer/review/list/{menu}:
-    get:
-      description: 메뉴에 해당하는 리뷰 리스트를 반환하기 위한 기능
-      parameters:
-      - description: Menu name
-        in: path
-        name: menu
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 'data: 메뉴에 해당하는 리뷰 리스트'
-          schema:
-            allOf:
-            - $ref: '#/definitions/controller.SuccessResultJSON'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/model.Review'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/controller.ErrorResultJSON'
-      summary: call GetReviewList, return the List of reviews corresponding to the
-        menu.
-  /recipant/menu:
     post:
       consumes:
       - application/json
@@ -248,7 +79,7 @@ paths:
             $ref: '#/definitions/controller.ErrorResultJSON'
       summary: call CreateMenu, Create the Menu object and return result message by
         string.
-  /recipant/menu/{name}:
+  /v1/menus/{name}:
     delete:
       description: Menu 객체를 삭제하기 위한 기능
       parameters:
@@ -299,7 +130,104 @@ paths:
             $ref: '#/definitions/controller.ErrorResultJSON'
       summary: call UpdateMenu, Update the Menu object and return result message by
         string.
-  /recipant/order/{seq}/{status}:
+  /v1/orders:
+    get:
+      description: 주문 상태에 해당하는 리스트를 반환하는 기능
+      parameters:
+      - description: Order status [active|complete|all]
+        in: query
+        name: status
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: status에 해당하는 주문 리스트'
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.SuccessResultJSON'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Order'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.ErrorResultJSON'
+      summary: call GetOrderList, return the Order object list.
+    post:
+      consumes:
+      - application/json
+      description: 주문 객체를 생성하기 위한 기능
+      parameters:
+      - description: Order data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/model.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'data: 생성된 주문 일련번호'
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.SuccessResultJSON'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.ErrorResultJSON'
+      summary: call CreateOrder, Create the Order object and return result message
+        by string.
+  /v1/orders/menu/{seq}/{type}:
+    put:
+      consumes:
+      - application/json
+      description: 주문의 메뉴를 변경하기 위한 기능
+      parameters:
+      - description: Menu name list
+        in: body
+        name: menuList
+        required: true
+        schema:
+          $ref: '#/definitions/model.OrderMenuList'
+      - description: Order sequence number
+        in: path
+        name: seq
+        required: true
+        type: string
+      - description: Order change type [add|change]
+        in: path
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 새로운 주문 일련번호
+          schema:
+            allOf:
+            - $ref: '#/definitions/controller.SuccessResultJSON'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.ErrorResultJSON'
+      summary: call ChangeOrderMenu, Change the Order menu and return result message
+        by string.
+  /v1/orders/status/{seq}/{status}:
     put:
       description: 주문의 상태를 변경하기 위한 기능
       parameters:
@@ -326,32 +254,58 @@ paths:
             $ref: '#/definitions/controller.ErrorResultJSON'
       summary: call ChangeOrderStatus, Change the Order status and return result message
         by string.
-  /recipant/order/list:
-    get:
-      description: 주문 상태에 해당하는 리스트를 반환하는 기능
+  /v1/reviews:
+    post:
+      consumes:
+      - application/json
+      description: 리뷰 객체를 생성하기 위한 기능
       parameters:
-      - description: Order status [active|deactive|complete|all]
-        in: query
-        name: status
+      - description: Review data
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/model.Review'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.SuccessResultJSON'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.ErrorResultJSON'
+      summary: call CreateReview, Create the Review object and return result message
+        by string.
+  /v1/reviews/{menu}:
+    get:
+      description: 메뉴에 해당하는 리뷰 리스트를 반환하기 위한 기능
+      parameters:
+      - description: Menu name
+        in: path
+        name: menu
         required: true
         type: string
       produces:
       - application/json
       responses:
         "200":
-          description: 'data: status에 해당하는 주문 리스트'
+          description: 'data: 메뉴에 해당하는 리뷰 리스트'
           schema:
             allOf:
             - $ref: '#/definitions/controller.SuccessResultJSON'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/model.Order'
+                    $ref: '#/definitions/model.Review'
                   type: array
               type: object
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/controller.ErrorResultJSON'
-      summary: call GetOrderList, return the Order object list.
+      summary: call GetReviewList, return the List of reviews corresponding to the
+        menu.
 swagger: "2.0"
