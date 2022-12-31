@@ -44,7 +44,7 @@ func (ctl *Controller) CreateOrder(c *gin.Context) {
 // @Description 주문 상태에 해당하는 리스트를 반환하는 기능
 // @name GetOrderList
 // @Produce json
-// @Param status query string true "Order status [active|deactive|complete|all]"
+// @Param status query string true "Order status [active|complete|all]"
 // @Router /recipant/order/list [get]
 // @Router /orderer/order/list [get]
 // @Success 200 {object} controller.SuccessResultJSON{data=[]model.Order} "data: status에 해당하는 주문 리스트"

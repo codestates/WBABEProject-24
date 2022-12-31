@@ -19,7 +19,6 @@ import (
 // 주문 상태 상수 정의
 const (
 	ORDER_STATUS_GROUP_ACTIVE    = "active"
-	ORDER_STATUS_GROUP_DEACTIVE  = "deactive"
 	ORDER_STATUS_GROUP_COMPELETE = "complete"
 	ORDER_STATUS_GROUP_ALL       = "all"
 
@@ -85,7 +84,6 @@ func NewOrderModel(col *mongo.Collection) *orderModel {
 			ORDER_STATUS_DELIVERY,
 			ORDER_STATUS_RECEIPT,
 			ORDER_STATUS_WAITING}
-	m.orderStatusGroup[ORDER_STATUS_GROUP_DEACTIVE] = []string{ORDER_STATUS_COMPLETED}
 	m.orderStatusGroup[ORDER_STATUS_GROUP_COMPELETE] = []string{ORDER_STATUS_COMPLETED}
 	return m
 }
