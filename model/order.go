@@ -95,15 +95,18 @@ func (p *orderModel) CreateOrder(order Order) (string, error) {
 	/*
 		이렇게 seq를 구성한다면 주문에 대해서 중복이 발생할 가능성은 없나요?
 		동일한 시간에 주문이 들어온다면 중복된 주문 번호가 생기지는 않을까요?
+		----------------
+		시퀀스 문자열은 "현재시간-주문카운트"의 형식이며,
+		주문카운트는 원자적 증가 연산을 사용하기에 중복되지 않을 것이라고 생각합니다.
+		하지만 InsertOne 함수 호출이 실패하여 주문카운트를 감소시키면서 주문카운트가 중복될 가능성이 있어 보입니다.
+		일단 주문카운트 감소 로직을 제거하는 것으로 주문 번호 중복 문제는 해결될 것으로 생각합니다.
 	*/
 	order.Seq = util.CreateSeqStr(uint32(atomic.AddInt32(&p.orderCounter, 1)))
 	order.Status = ORDER_STATUS_WAITING
 	order.CreatedAt = primitive.NewDateTimeFromTime(time.Now())
 	order.UpdatedAt = order.CreatedAt
-	// 주문 저장
 	_, err := p.col.InsertOne(context.TODO(), order)
 	if err != nil {
-		atomic.AddInt32(&p.orderCounter, -1)
 		return "", err
 	}
 	// 주문 일련번호 반환
