@@ -49,7 +49,7 @@ func (srv *Service) ChangeOrderMenu(orderSeq, changeType string, menuListUpdate 
 		return "", fmt.Errorf("Invalid type of change")
 	}
 	// 주문 변경 가능 체크
-	if order.IsChangeable() == false {
+	if order.CanChangeStatus() == false {
 		if changeType == CHANGE_ORDER_TYPE_CHANGE {
 			// 주문 변경 불가
 			return "", fmt.Errorf("Order Not changeable current status: [%s]", order.Status)

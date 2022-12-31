@@ -40,7 +40,7 @@ type Order struct {
 	UpdatedAt primitive.DateTime `json:"updatedAt" bson:"updatedAt"`
 }
 
-func (o *Order) IsChangeable() bool {
+func (o *Order) CanChangeStatus() bool {
 	if o.Status == ORDER_STATUS_WAITING || o.Status == ORDER_STATUS_RECEIPT {
 		return true
 	}
