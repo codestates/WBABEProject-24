@@ -21,11 +21,7 @@ func NewRouter(ctl *ctl.Controller) (*Router, error) {
 
 func CORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		/*
-			CORS 허용을 위해서 모든 도메인을 허용한다면 보안에 이슈가 생깁니다.
-			보통 운영되는 시스템의 경우는 특정한 도메인만을 허용하고 그 이외의 요청은 거부하도록 설정합니다.
-		*/
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, X-Forwarded-For, Authorization, accept, origin, Cache-Control, X-Requested-With")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
