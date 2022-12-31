@@ -91,8 +91,8 @@ func (p *menuModel) CreateMenu(menu Menu) error {
 	// 메뉴 기본값 초기화
 	menu.AvgScore = 0
 	menu.OrderCount = 0
-	menu.IsRecommend = util.NewFalse()
-	menu.IsDeleted = util.NewFalse()
+	menu.IsRecommend = util.NewBool(false)
+	menu.IsDeleted = util.NewBool(false)
 	menu.CreatedAt = primitive.NewDateTimeFromTime(time.Now())
 	menu.UpdatedAt = menu.CreatedAt
 	// 메뉴 저장
@@ -161,7 +161,7 @@ func (p *menuModel) DeleteMenuByName(name string) error {
 		return err
 	}
 	// 삭제 flag를 true로 설정 후, 업데이트
-	menuForDelete.IsDeleted = util.NewTrue()
+	menuForDelete.IsDeleted = util.NewBool(true)
 	menuForDelete.UpdatedAt = primitive.NewDateTimeFromTime(time.Now())
 	if err := p.UpdateMenuByName(name, MenuForUpdate(menuForDelete)); err != nil {
 		return err
