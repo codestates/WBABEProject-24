@@ -17,7 +17,7 @@ func (srv *Service) CreateMenu(menu model.Menu) error {
 }
 
 func (srv *Service) FindMenuByName(name string) (model.Menu, error) {
-	model, err := srv.md.MenuModel.FindMenuByName(name)
+	model, err := srv.md.MenuModel.FindMenuByName(name, false, false)
 	if err != nil {
 		return model, err
 	}

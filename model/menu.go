@@ -62,14 +62,9 @@ func NewMenuModel(col *mongo.Collection) *menuModel {
 
 func (p *menuModel) CanOrder(menuameList []string) error {
 	for _, name := range menuameList {
-		menu, err := p.FindMenuByName(name)
-		// 존재하는 메뉴인지 체크
-		if err != nil {
-			return err
-		}
 		// 주문 가능한 메뉴인지 체크
-		if *menu.IsAvailable == false || *menu.IsDeleted == true {
-			return fmt.Errorf("Menu %s Not Available", menu.Name)
+		if _, err := p.FindMenuByName(name, true, true); err != nil {
+			return err
 		}
 	}
 	return nil
@@ -77,7 +72,7 @@ func (p *menuModel) CanOrder(menuameList []string) error {
 
 func (p *menuModel) CreateMenu(menu Menu) error {
 	// 이미 존재하는 메뉴인지 체크
-	if _, err := p.FindMenuByName(menu.Name); err == nil {
+	if _, err := p.FindMenuByName(menu.Name, false, false); err == nil {
 		return fmt.Errorf("Menu Already exist")
 	}
 	// 메뉴 기본값 초기화
@@ -95,15 +90,22 @@ func (p *menuModel) CreateMenu(menu Menu) error {
 	return nil
 }
 
-func (p *menuModel) FindMenuByName(name string) (Menu, error) {
+func (p *menuModel) FindMenuByName(name string, availableOnly, notDeletedOnly bool) (Menu, error) {
 	var result Menu
-	filter := bson.D{{"name", name}, {"isDeleted", false}}
+	filter := bson.D{{"name", name}}
 	err := p.col.FindOne(context.TODO(), filter).Decode(&result)
 	if err == mongo.ErrNoDocuments {
 		return result, fmt.Errorf("No Menu found given name: %s\n", name)
 	} else if err != nil {
 		return result, err
 	}
+	if notDeletedOnly && *result.IsDeleted == true {
+		return result, fmt.Errorf("Deleted Menu")
+	}
+	if availableOnly && *result.IsAvailable == false {
+		return result, fmt.Errorf("Menu Not available")
+	}
+
 	return result, nil
 }
 
@@ -147,7 +149,8 @@ func (p *menuModel) UpdateMenuByName(name string, menu Menu) error {
 }
 
 func (p *menuModel) DeleteMenuByName(name string) error {
-	menuForDelete, err := p.FindMenuByName(name)
+	// 존재하는 메뉴인지, 이미 삭제된 메뉴인지 체크
+	menuForDelete, err := p.FindMenuByName(name, false, true)
 	if err != nil {
 		return err
 	}
@@ -161,7 +164,7 @@ func (p *menuModel) DeleteMenuByName(name string) error {
 }
 
 func (p *menuModel) IncreaseOrderCount(name string) error {
-	menu, err := p.FindMenuByName(name)
+	menu, err := p.FindMenuByName(name, false, false)
 	if err != nil {
 		return err
 	}

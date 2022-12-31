@@ -33,7 +33,7 @@ func (srv *Service) CreateReview(review model.Review) error {
 	if err != nil {
 		return err
 	}
-	menu, err := srv.md.MenuModel.FindMenuByName(review.MenuName)
+	menu, err := srv.md.MenuModel.FindMenuByName(review.MenuName, false, false)
 	if err != nil {
 		return err
 	}
